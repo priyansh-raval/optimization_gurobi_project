@@ -139,12 +139,12 @@ $T$ and gives the nearest-store travel times requested for reporting.
 \section*{Question 3: Optimization performance}
 \question{Implement both models using \texttt{gurobipy}, test each for $p = 1, \ldots, 10$ with a one-minute time limit, and plot runtime and optimality gap versus $p$. Which model performed better in terms of runtime? Do you think the difference in optimization performance would be an important consideration in practice?}
 
-The existing notebook results use continuous assignment variables $x_{ij}\in[0,1]$, rather than the binary assignments formulated above. The continuous formulations have the same optimal objective values, but their runtimes do not measure the binary formulations. These runs used Gurobi~14.0 with a 60-second time limit (\texttt{TimeLimit = 60}). Figure~\ref{fig:runtime-gap} shows runtime and optimality gap versus $p$, and Table~\ref{tab:runtime} lists the runtimes.
+We tested the two models for $p=1,\ldots,10$ and found that all runs reached a 0\% optimality gap within our 60-second time limit (see Figure~\ref{fig:runtime-gap}, right). Overall, minimizing mean travel time was slightly faster than minimizing maximum travel time. Across all values of $p$, the mean model took 70.67 seconds, whereas the worst-case model took 82.08 seconds. The difference is most noticeable for $p=2,3,4$, as shown in Figure~\ref{fig:runtime-gap} (left). Here, runtime was not a serious concern when choosing between the models.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{part1_runtime_gap.png}
-    \caption{Gurobi runtime (left) and final optimality gap (right) versus the number of selected stores $p$ for the mean-dist (blue) and max-dist (green) models.}
+    \caption{Binary-model Gurobi runtime (left) and final optimality gap (right) versus the number of selected stores $p$ for the mean-dist (blue) and max-dist (green) models.}
     \label{fig:runtime-gap}
 \end{figure}
 
@@ -154,8 +154,8 @@ The existing notebook results use continuous assignment variables $x_{ij}\in[0,1
 \begin{tabular}{l*{10}{c}c}
 \toprule
 $p$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Total \\ \midrule
-mean-dist runtime (s) & 0.35 & 4.80 & 4.01 & 2.80 & 2.36 & 2.19 & 2.80 & 1.95 & 1.76 & 1.68 & 24.71 \\
-max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70 & 3.18 & 1.43 & 118.52 \\ \bottomrule
+mean-dist runtime (s) & 11.03 & 10.46 & 17.90 & 5.18 & 4.32 & 4.23 & 7.75 & 3.76 & 3.19 & 2.85 & 70.67 \\
+max-dist runtime (s) & 2.30 & 26.54 & 19.05 & 19.77 & 3.14 & 3.23 & 2.98 & 1.75 & 1.71 & 1.60 & 82.08 \\ \bottomrule
 \end{tabular}
 \caption{Runtime for each model and value of $p$. Every run terminated with a proven optimal solution (0\% optimality gap).}
 \label{tab:runtime}
@@ -168,9 +168,15 @@ max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{part1_mean_max_time.png}
-    \caption{Mean (solid) and maximum (dashed) customer travel time versus $p$ for the mean-dist (blue) and max-dist (green) models. For mean-dist, travel times are measured to each customer's closest selected store. For max-dist, each customer's travel time is the trip-weighted average $\sum_j t_{ij} x_{ij}$ from the model's solution.}
+    \caption{Mean (solid) and maximum (dashed) customer travel time versus $p$ for the mean-dist (blue) and max-dist (green) models. For both models, travel times are measured to each customer's closest selected store.}
     \label{fig:mean-max}
 \end{figure}
+
+The average and worst-case travel times generally decrease as we include more locations in the pilot, which makes sense. The mean-travel-time model's average falls from 18.12 to 7.34 minutes, while its maximum falls from 56.00 to 29.40 minutes. The worst-case model's average falls from 18.97 to 8.82 minutes, and its maximum falls from 45.80 to 25.40 minutes. This effect can be seen in Figure~\ref{fig:mean-max}.
+
+The largest improvements occur as $p$ increases from 1 to 5, with more modest improvements afterward. In particular, the worst-case model's maximum stays at 25.40 minutes for $p\ge5$. This reflects saturation: even selecting all 36 stores cannot improve the maximum travel time on this dataset.
+
+Figure~\ref{fig:mean-max} also shows that the worst-case model has a smaller gap between its mean and maximum travel times. Its maximum is lower, but its mean is higher than the mean model's. This illustrates the tradeoff between reducing average travel time and protecting the customers with the longest trips.
 
 %--------------------------------------------------------------------
 \section*{Question 5: Spatial comparison for $p = 5$}
