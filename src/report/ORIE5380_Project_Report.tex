@@ -59,7 +59,7 @@ We formulated the models ourselves on a whiteboard, then used Anthropic's Claude
 \section*{Question 1: Minimize Mean Travel Time}
 
 Select $p$ of $N$ stores to minimize the average travel time of $M$ customers.
-Let $t_{ij}$ be the travel time from customer $i$ to store $j$.
+Let $[M]=\{1,\ldots,M\}$ and $[N]=\{1,\ldots,N\}$ index customers and stores, and let $t_{ij}$ be the travel time from customer $i$ to store $j$.
 
 \subsection*{Decision Variables}
 \[
@@ -112,7 +112,7 @@ $T\ge0$ bounding every customer's assigned travel time.
 \min_{y,x,T}\quad T.
 \label{eq:max-obj}
 \end{equation}
-This minimizes the worst-case customer travel time.
+This minimizes the worst-case customer travel time; at optimality, $T$ equals the largest assigned travel time.
 
 \subsection*{Constraints}
 \begin{center}
@@ -138,7 +138,7 @@ $T$ and gives the nearest-store travel times requested for reporting.
 %--------------------------------------------------------------------
 \section*{Question 3: Optimization performance}
 
-We tested the two models for $p=1,\ldots,10$ and found that all runs reached a 0\% optimality gap within our 60-second time limit (see Figure~\ref{fig:runtime-gap}, right). Overall, minimizing mean travel time was slightly faster than minimizing maximum travel time. Across all values of $p$, the mean model took 70.67 seconds, whereas the worst-case model took 82.08 seconds. The difference is most noticeable for $p=2,3,4$, as shown in Figure~\ref{fig:runtime-gap} (left). Here, runtime was not a serious concern when choosing between the models.
+We tested the two models for $p=1,\ldots,10$ and found that all runs reached a 0\% optimality gap within our 60-second time limit (see Figure~\ref{fig:runtime-gap}, right). The mean model was slightly faster in total, mainly because the worst-case model took longer at $p=2,3,4$. Across all values of $p$, the mean model took 70.67 seconds, whereas the worst-case model took 82.08 seconds. Here, runtime was not a serious concern when choosing between the models.
 
 \begin{figure}[htbp]
     \centering
@@ -170,7 +170,7 @@ max-dist runtime (s) & 2.30 & 26.54 & 19.05 & 19.77 & 3.14 & 3.23 & 2.98 & 1.75 
     \label{fig:mean-max}
 \end{figure}
 
-The average and worst-case travel times generally decrease as we include more locations in the pilot, which makes sense. The mean-travel-time model's average falls from 18.12 to 7.34 minutes, while its maximum falls from 56.00 to 29.40 minutes. The worst-case model's average falls from 18.97 to 8.82 minutes, and its maximum falls from 45.80 to 25.40 minutes. This effect can be seen in Figure~\ref{fig:mean-max}.
+The average and worst-case travel times generally decrease as we include more locations in the pilot, which makes sense. From $p=1$ to $p=10$, the mean-travel-time model's average falls from 18.12 to 7.34 minutes, while its maximum falls from 56.00 to 29.40 minutes. The worst-case model's average falls from 18.97 to 8.82 minutes, and its maximum falls from 45.80 to 25.40 minutes. This effect can be seen in Figure~\ref{fig:mean-max}.
 
 The largest improvements occur as $p$ increases from 1 to 5, with more modest improvements afterward. In particular, the worst-case model's maximum stays at 25.40 minutes for $p\ge5$. This reflects saturation: even selecting all 36 stores cannot improve the maximum travel time on this dataset.
 

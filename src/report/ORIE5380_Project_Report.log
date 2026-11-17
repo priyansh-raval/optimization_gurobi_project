@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 18:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -542,13 +542,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc}]
-<figures/part1_runtime_gap.png, id=21, 714.56963pt x 208.98074pt>
+<figures/part1_runtime_gap.png, id=20, 714.56963pt x 208.98074pt>
 File: figures/part1_runtime_gap.png Graphic file (type png)
 <use figures/part1_runtime_gap.png>
 Package pdftex.def Info: figures/part1_runtime_gap.png  used on input line 145.
 
 (pdftex.def)             Requested size: 496.85625pt x 145.30974pt.
-<figures/part1_mean_max_time.png, id=23, 353.21962pt x 264.68887pt>
+<figures/part1_mean_max_time.png, id=22, 353.21962pt x 264.68887pt>
 File: figures/part1_mean_max_time.png Graphic file (type png)
 <use figures/part1_mean_max_time.png>
 Package pdftex.def Info: figures/part1_mean_max_time.png  used on input line 16
@@ -567,7 +567,7 @@ Package rerunfilecheck Info: File `ORIE5380_Project_Report.out' has not changed
 Here is how much of TeX's memory you used:
  14026 strings out of 467525
  219229 string characters out of 5418982
- 663856 words of memory out of 5000000
+ 664856 words of memory out of 5000000
  42749 multiletter control sequences out of 15000+600000
  645686 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -583,10 +583,10 @@ al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
 texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2026/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/202
 6/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on ORIE5380_Project_Report.pdf (3 pages, 269719 bytes).
+Output written on ORIE5380_Project_Report.pdf (3 pages, 269971 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
+ 92 PDF objects out of 1000 (max. 8388607)
+ 60 compressed objects within 1 object stream
  9 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
