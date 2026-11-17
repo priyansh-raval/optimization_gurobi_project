@@ -53,134 +53,93 @@
 \end{center}
 
 \textbf{Use of AI.} 
-Anthropic's Claude was used in cleaning up the code and formatting the \LaTeX~content.
+We formulated the models ourselves on a whiteboard, then used Anthropic's Claude and OpenAI's ChatGPT to write up those formulations.
 
 %--------------------------------------------------------------------
 \section*{Question 1: Minimize Mean Travel Time}
 
-Here we will formalize a mathematical model to select $p$ of the chain's $N$ locations
-such that we \emph{minimize} the mean travel time of the $M$ delivery addresses of customers 
-from the last three months.
+Select $p$ of $N$ stores to minimize the average travel time of $M$ customers.
+Let $t_{ij}$ be the travel time from customer $i$ to store $j$.
 
-Let $t_{ij}$ be the travel time for customer $i$ to travel to store $j$.
+\subsection*{Decision Variables}
+\[
+y_j = \begin{cases}
+1 & \text{if store $j$ is selected},\\
+0 & \text{otherwise},
+\end{cases}
+\qquad
+x_{ij} = \begin{cases}
+1 & \text{if customer $i$ is assigned to store $j$},\\
+0 & \text{otherwise}.
+\end{cases}
+\]
+Both variables are binary, for all $i\in[M]$ and $j\in[N]$.
 
-\textbf{Decision Variables}
+\subsection*{Objective Function}
+\begin{equation}
+\min_{y,x}\quad \frac{1}{M}\sum_{i=1}^{M}\sum_{j=1}^{N}t_{ij}x_{ij}.
+\label{eq:mean-obj}
+\end{equation}
+This minimizes the mean travel time to customers' assigned stores. Each customer is
+assigned to a nearest selected store in an optimal solution.
 
-There are two types of decisions that need to be made. The first decision is obvious: 
-we have to choose $p$ stores to participate in the pilot program of our $N$ options. 
-This is a binary decision --- store $j$ is included in the pilot or not.
-We can express it as
-\[y_j = \begin{cases}
-    1 & \text{if store $j$ is selected for the pilot program} \\
-    0 & \text{otherwise}
-\end{cases} \quad \forall j \in [N]\]
-The second decision is less obvious but just as important: which of the $p$ selected stores
-each customer travels to. We represent it as the fraction of customer $i$'s trips that go to
-store $j$:
-\[ x_{ij} \in [0,1] \quad \forall i \in [M],\ j \in [N], \]
-with $\sum_{j=1}^{N} x_{ij} = 1$ (all of customer $i$'s trips go to some store) and
-$x_{ij} \le y_j$ (customers can only use selected stores).
-
-We do not need a constraint forcing each customer to their closest selected store.
-Customer $i$'s travel time $\sum_{j} t_{ij} x_{ij}$ is a weighted average of their travel
-times to the selected stores. Because we \emph{minimize}, the solver puts all of the weight
-on the shortest travel time. So in an optimal solution each customer goes entirely to their
-closet store participating in the pilot. And if two stores are equally close, a split between 
-them is an equally optimal solution.
-
-\textbf{Model}
-
-\begin{alignat}{2}
-    \min_{y,\,x} \quad & \frac{1}{M} \sum_{i=1}^{M} \sum_{j=1}^{N} t_{ij}\, x_{ij} \label{eq:mean-obj}\\
-    \text{s.t.} \quad & \sum_{j=1}^{N} y_j = p \label{eq:p}\\
-    & \sum_{j=1}^{N} x_{ij} = 1 &\quad& \forall i \in [M] \label{eq:assign}\\
-    & x_{ij} \le y_j &\quad& \forall i \in [M],\ j \in [N] \label{eq:link}\\
-    & y_j \in \{0,1\} &\quad& \forall j \in [N] \nonumber\\
-    & x_{ij} \in [0,1] &\quad& \forall i \in [M],\ j \in [N]. \nonumber
-\end{alignat}
-
-Our objective function~\eqref{eq:mean-obj} is \emph{minimizing} the mean travel time for each customer. 
-For each customer it is calculating the fraction of customer trips that go to each visited store and 
-the total time spent traveling to those stores. This gives the total time a customer spent traveling 
-to any selected store. We then calculate this for all customers and divide by the number of custers 
-to get the mean travel time for each customer.
-
-The first constraint~\eqref{eq:p} ensures exaclty $p$ stores are chosen for the pilot.
-
-The second set of constraint~\eqref{eq:assign} ensures that each customer's trip go to some store.
-
-The third set of constraints~\eqref{eq:link} ensures a customer can only travel to a store chosen 
-for the pilot.
-
-The last two expressions are speicfying the range for decision variables we discussed in the 
-previous section.
-
-The model is therefore the average travel time to the nearest pilot store.
+\subsection*{Constraints}
+\begin{center}
+\begin{tabular}{@{}p{0.49\textwidth}p{0.47\textwidth}@{}}
+\toprule
+\textbf{Constraint} & \textbf{What it enforces} \\
+\midrule
+$\sum_{j=1}^{N}y_j=p$ & Select exactly $p$ stores. \\[6pt]
+$\sum_{j=1}^{N}x_{ij}=1\quad \forall i\in[M]$ & Assign each customer to exactly one store. \\[6pt]
+$x_{ij}\le y_j\quad \forall i\in[M],\ j\in[N]$ & Allow assignments only to selected stores. \\[6pt]
+$y_j\in\{0,1\}\quad \forall j\in[N]$ & Make store selection binary. \\[6pt]
+$x_{ij}\in\{0,1\}\quad \forall i\in[M],\ j\in[N]$ & Make customer assignments binary. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 %--------------------------------------------------------------------
 \section*{Question 2: Minimize Worst-Case Travel Time}
 
-Here we will formalize an optimization model to select $p$ of the chain's $N$ locations 
-to minimize the worst-case (maximum) customer travel time of the $M$ delivery addresses of customers 
-from the last three months.
+Select $p$ stores to minimize the maximum customer travel time, using the same $t_{ij}$.
 
-Let $t_{ij}$ be the travel time for customer $i$ to travel to store $j$.
+\subsection*{Decision Variables}
+Use the binary variables $y_j$ and $x_{ij}$ from Question 1. Add a continuous variable
+$T\ge0$ bounding every customer's assigned travel time.
 
-\textbf{Decision Variables}
+\subsection*{Objective Function}
+\begin{equation}
+\min_{y,x,T}\quad T.
+\label{eq:max-obj}
+\end{equation}
+This minimizes the worst-case customer travel time.
 
-We use the same decision variables as in Question 1, with the same meaning and domains:
-$y_j \in \{0,1\}$ selects store $j$ for the pilot, and $x_{ij} \in [0,1]$ is the fraction of
-customer $i$'s trips that go to store $j$. As before, customer $i$'s travel time is
-$\sum_{j=1}^{N} t_{ij} x_{ij}$.
+\subsection*{Constraints}
+\begin{center}
+\begin{tabular}{@{}p{0.49\textwidth}p{0.47\textwidth}@{}}
+\toprule
+\textbf{Constraint} & \textbf{What it enforces} \\
+\midrule
+$\sum_{j=1}^{N}t_{ij}x_{ij}\le T\quad \forall i\in[M]$ & Bound every customer's travel time by $T$. \\[6pt]
+$\sum_{j=1}^{N}y_j=p$ & Select exactly $p$ stores. \\[6pt]
+$\sum_{j=1}^{N}x_{ij}=1\quad \forall i\in[M]$ & Assign each customer to exactly one store. \\[6pt]
+$x_{ij}\le y_j\quad \forall i\in[M],\ j\in[N]$ & Allow assignments only to selected stores. \\[6pt]
+$y_j\in\{0,1\}\quad \forall j\in[N]$ & Make store selection binary. \\[6pt]
+$x_{ij}\in\{0,1\}\quad \forall i\in[M],\ j\in[N]$ & Make customer assignments binary. \\
+$T\ge0$ & Keep the travel-time bound nonnegative. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-The worst-case travel time $\max_{i} \sum_{j} t_{ij} x_{ij}$ is not a linear function, so we add
-one continuous variable
-\[ T \ge 0, \]
-the maximum travel time of any customer to the store(s) they travel to.
-
-\textbf{Model}
-
-The model keeps every constraint of the Question 1 model. It replaces the objective with $T$
-and adds one constraint per customer that ties $T$ to that customer's travel time.
-\begin{alignat}{2}
-    \min_{y,\,x,\,T} \quad & T \label{eq:max-obj}\\
-    \text{s.t.} \quad & \sum_{j=1}^{N} t_{ij}\, x_{ij} \le T &\quad& \forall i \in [M] \label{eq:T}\\
-    & \text{constraints } \eqref{eq:p}\text{--}\eqref{eq:link} \text{ from Question 1} \nonumber\\
-    & y_j \in \{0,1\} &\quad& \forall j \in [N] \nonumber\\
-    & x_{ij} \in [0,1] &\quad& \forall i \in [M],\ j \in [N] \nonumber\\
-    & T \ge 0. \nonumber
-\end{alignat}
-
-Our objective~\eqref{eq:max-obj} is \emph{minimizing} $T$.
-
-The new set of constraints~\eqref{eq:T} makes $T$ at least as large as every customer's travel
-time, so $T \ge \max_i \sum_j t_{ij} x_{ij}$. Because we minimize $T$, the solver pushes it down
-until it equals the largest travel time. This turns $\min \max_i \sum_j t_{ij} x_{ij}$ into a
-linear model.
-
-Constraints~\eqref{eq:p}--\eqref{eq:link} and the variable domains are unchanged from Question 1:
-exactly $p$ stores are chosen, all of each customer's trips go to some store, and customers can
-only travel to stores in the pilot. On the project data the model has $36$ binary variables,
-$108{,}001$ continuous variables and $111{,}001 + 3{,}000 = 114{,}001$ constraints.
-
-The continuous $x_{ij}$ are still enough, for the same reason as in Question 1. For any choice of
-stores, each customer's travel time is smallest when all of their trips go to their closest
-selected store. The best possible $T$ is therefore the travel time of the farthest customer to
-their closest selected store, and splitting trips cannot make it smaller.
-
-Unlike Question 1, however, the solver has no reason to send every customer to their closest
-store. Only the customer(s) with the largest travel time determine $T$. Every other customer may
-travel to any selected store, or split their trips between stores, as long as their travel time
-stays at most $T$. In a split, some individual trips can even be longer than $T$, since $T$ only
-bounds the weighted average. Sending every customer to their closest selected store never
-increases $T$, so this reassignment is also optimal. The distinction matters when we interpret
-the results in Question 4.
+Customers need not be assigned to their nearest selected store if their travel time
+remains at most $T$. Reassigning them to their nearest selected store cannot increase
+$T$ and gives the nearest-store travel times requested for reporting.
 
 %--------------------------------------------------------------------
 \section*{Question 3: Optimization performance}
 \question{Implement both models using \texttt{gurobipy}, test each for $p = 1, \ldots, 10$ with a one-minute time limit, and plot runtime and optimality gap versus $p$. Which model performed better in terms of runtime? Do you think the difference in optimization performance would be an important consideration in practice?}
 
-Both models were implemented in the provided notebook exactly as formulated above and solved with Gurobi~14.0 with a 60-second time limit (\texttt{TimeLimit = 60}). Figure~\ref{fig:runtime-gap} shows runtime and optimality gap versus $p$, and Table~\ref{tab:runtime} lists the runtimes.
+The existing notebook results use continuous assignment variables $x_{ij}\in[0,1]$, rather than the binary assignments formulated above. The continuous formulations have the same optimal objective values, but their runtimes do not measure the binary formulations. These runs used Gurobi~14.0 with a 60-second time limit (\texttt{TimeLimit = 60}). Figure~\ref{fig:runtime-gap} shows runtime and optimality gap versus $p$, and Table~\ref{tab:runtime} lists the runtimes.
 
 \begin{figure}[htbp]
     \centering
