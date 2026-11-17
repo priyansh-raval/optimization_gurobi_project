@@ -1,6 +1,8 @@
 \documentclass{article}
-\usepackage{fullpage}
-\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage[letterpaper, text={6.875in,8.875in}, top=1in]{geometry}
+\usepackage{times}     % Times text font, as in the sample
+\usepackage{booktabs}  % \toprule / \midrule / \bottomrule tables
+\usepackage{titlesec}
 \usepackage{amssymb}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage{amsmath}
@@ -9,11 +11,13 @@
 \usepackage{accents}
 \usepackage{graphicx}
 \usepackage{subcaption}
-\usepackage{hyperref} 
+\usepackage{hyperref}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{parskip}  % blank line in the source = visible gap between paragraphs, no indent
+\captionsetup{font=small, labelsep=period}  % "Table 1." / "Figure 1." small captions
 \renewcommand{\thempfootnote}{\arabic{mpfootnote}}
 
-\definecolor{urlBlue}{HTML}{1A0DAB} 
+\definecolor{urlBlue}{rgb}{0.21,0.49,0.74}
 \hypersetup{
     colorlinks=true,
     linkcolor=urlBlue,    % Color of internal links (sections, pages)
@@ -29,95 +33,192 @@
 \newcommand{\norm}[2]{\left\lVert#1\right\rVert\right_{#2}}
 
 \setlength{\parindent}{0pt}
+\raggedbottom  % don't stretch paragraph gaps to fill each column
+\pagestyle{empty}  % no page numbers
 
+% Section headings like the sample: large bold, flush left
+\titleformat*{\section}{\large\bfseries}
+\titlespacing*{\section}{0pt}{12pt plus 3pt minus 2pt}{6pt}
+
+\graphicspath{{figures/}}
+
+\newcommand{\question}[1]{\par\medskip\noindent\textit{#1}\par\smallskip}
 
 \begin{document}
-\noindent ORIE 5380 - Optimization Methods (Fall 2026) \hfill \today
-
-\vspace{1cm}
 \begin{center}
-\Large{ORIE 5380 - Course Project}
+{\Large\bfseries ORIE 5380 Course Project Report: Part 1 \par}
+\vspace{1.2em}
+{\normalsize David Johnson (dmj68), Priyansh Raval (pr496) \par}
+\vspace{2em}
 \end{center}
-\vspace{0.5cm}
 
-\textbf{Instructions:} In the course project, you will get experience formulating, testing, and interpreting models to support business decisions. The project has two parts, where in each part you will develop and test two models, submit a PDF report of results on Gradescope, and complete a 10-15 minute in-class quiz to check your understanding. You are not required to use a particular program for your report but all text outside of equations should be typed. We encourage you to use a program like Latex or use an AI model and a tool like \href{https://latex2image.joeraut.com/}{Latex2Img} to produce nicely typeset equations but we will accept photos of cleanly handwritten equations. If you want to use Overleaf/Latex, the project file is available \href{https://canvas.cornell.edu/courses/88614/files/folder/project}{here}.\\
+\textbf{Use of AI.} 
+Anthropic's Claude was used in cleaning up the code and formatting the \LaTeX~content.
 
-\textbf{The project can be done individually or in pairs.} Either way, you must register your group in  \href{https://docs.google.com/spreadsheets/d/1Qzpdowc_uBHIe97B-gszYy7gAgAWgxaJapTZxUTM9T8/edit?usp=sharing}{the tracking spreadsheet} by 11/11. The spreadsheet has a section for students looking for partners. Like on the homework, you can discuss with students outside of your group at the level of a hallway discussion but the the reports should be independent.\\
+%--------------------------------------------------------------------
+\section*{Question 1: Minimize Mean Travel Time}
 
-\begin{minipage}{\textwidth}
+Here we will formalize a mathematical model to select $p$ of the chain's $N$ locations
+such that we \emph{minimize} the mean travel time of the $M$ delivery addresses of customers 
+from the last three months.
+
+Let $t_{ij}$ be the travel time for customer $i$ to travel to store $j$.
+
+\textbf{Decision Variables}
+
+There are two types of decisions that need to be made. The first decision is obvious: 
+we have to choose $p$ stores to participate in the pilot program of our $N$ options. 
+This is a binary decision --- store $j$ is included in the pilot or not.
+We can express it as
+\[y_j = \begin{cases}
+    1 & \text{if store $j$ is selected for the pilot program} \\
+    0 & \text{otherwise}
+\end{cases} \quad \forall j \in [N]\]
+The second decision is less obvious but just as important: which of the $p$ selected stores
+each customer travels to. We represent it as the fraction of customer $i$'s trips that go to
+store $j$:
+\[ x_{ij} \in [0,1] \quad \forall i \in [M],\ j \in [N], \]
+with $\sum_{j=1}^{N} x_{ij} = 1$ (all of customer $i$'s trips go to some store) and
+$x_{ij} \le y_j$ (customers can only use selected stores).
+
+We do not need a constraint forcing each customer to their closest selected store.
+Customer $i$'s travel time $\sum_{j} t_{ij} x_{ij}$ is a weighted average of their travel
+times to the selected stores. Because we \emph{minimize}, the solver puts all of the weight
+on the shortest travel time. So in an optimal solution each customer goes entirely to their
+closet store participating in the pilot. And if two stores are equally close, a split between 
+them is an equally optimal solution.
+
+\textbf{Model}
+
+\begin{alignat}{2}
+    \min_{y,\,x} \quad & \frac{1}{M} \sum_{i=1}^{M} \sum_{j=1}^{N} t_{ij}\, x_{ij} \label{eq:mean-obj}\\
+    \text{s.t.} \quad & \sum_{j=1}^{N} y_j = p \label{eq:p}\\
+    & \sum_{j=1}^{N} x_{ij} = 1 &\quad& \forall i \in [M] \label{eq:assign}\\
+    & x_{ij} \le y_j &\quad& \forall i \in [M],\ j \in [N] \label{eq:link}\\
+    & y_j \in \{0,1\} &\quad& \forall j \in [N] \nonumber\\
+    & x_{ij} \in [0,1] &\quad& \forall i \in [M],\ j \in [N]. \nonumber
+\end{alignat}
+
+Our objective function~\eqref{eq:mean-obj} is \emph{minimizing} the mean travel time for each customer. 
+For each customer it is calculating the fraction of customer trips that go to each visited store and 
+the total time spent traveling to those stores. This gives the total time a customer spent traveling 
+to any selected store. We then calculate this for all customers and divide by the number of custers 
+to get the mean travel time for each customer.
+
+The first constraint~\eqref{eq:p} ensures exaclty $p$ stores are chosen for the pilot.
+
+The second set of constraint~\eqref{eq:assign} ensures that each customer's trip go to some store.
+
+The third set of constraints~\eqref{eq:link} ensures a customer can only travel to a store chosen 
+for the pilot.
+
+The last two expressions are speicfying the range for decision variables we discussed in the 
+previous section.
+
+The model is therefore the average travel time to the nearest pilot store.
+
+%--------------------------------------------------------------------
+\section*{Question 2: Minimize Worst-Case Travel Time}
+
+Here we will formalize an optimization model to select $p$ of the chain's $N$ locations 
+to minimize the worst-case (maximum) customer travel time of the $M$ delivery addresses of customers 
+from the last three months.
+
+Let $t_{ij}$ be the travel time for customer $i$ to travel to store $j$.
+
+\textbf{Decision Variables}
+
+We use the same decision variables as in Question 1, with the same meaning and domains:
+$y_j \in \{0,1\}$ selects store $j$ for the pilot, and $x_{ij} \in [0,1]$ is the fraction of
+customer $i$'s trips that go to store $j$. As before, customer $i$'s travel time is
+$\sum_{j=1}^{N} t_{ij} x_{ij}$.
+
+The worst-case travel time $\max_{i} \sum_{j} t_{ij} x_{ij}$ is not a linear function, so we add
+one continuous variable
+\[ T \ge 0, \]
+the maximum travel time of any customer to the store(s) they travel to.
+
+\textbf{Model}
+
+The model keeps every constraint of the Question 1 model. It replaces the objective with $T$
+and adds one constraint per customer that ties $T$ to that customer's travel time.
+\begin{alignat}{2}
+    \min_{y,\,x,\,T} \quad & T \label{eq:max-obj}\\
+    \text{s.t.} \quad & \sum_{j=1}^{N} t_{ij}\, x_{ij} \le T &\quad& \forall i \in [M] \label{eq:T}\\
+    & \text{constraints } \eqref{eq:p}\text{--}\eqref{eq:link} \text{ from Question 1} \nonumber\\
+    & y_j \in \{0,1\} &\quad& \forall j \in [N] \nonumber\\
+    & x_{ij} \in [0,1] &\quad& \forall i \in [M],\ j \in [N] \nonumber\\
+    & T \ge 0. \nonumber
+\end{alignat}
+
+Our objective~\eqref{eq:max-obj} is \emph{minimizing} $T$.
+
+The new set of constraints~\eqref{eq:T} makes $T$ at least as large as every customer's travel
+time, so $T \ge \max_i \sum_j t_{ij} x_{ij}$. Because we minimize $T$, the solver pushes it down
+until it equals the largest travel time. This turns $\min \max_i \sum_j t_{ij} x_{ij}$ into a
+linear model.
+
+Constraints~\eqref{eq:p}--\eqref{eq:link} and the variable domains are unchanged from Question 1:
+exactly $p$ stores are chosen, all of each customer's trips go to some store, and customers can
+only travel to stores in the pilot. On the project data the model has $36$ binary variables,
+$108{,}001$ continuous variables and $111{,}001 + 3{,}000 = 114{,}001$ constraints.
+
+The continuous $x_{ij}$ are still enough, for the same reason as in Question 1. For any choice of
+stores, each customer's travel time is smallest when all of their trips go to their closest
+selected store. The best possible $T$ is therefore the travel time of the farthest customer to
+their closest selected store, and splitting trips cannot make it smaller.
+
+Unlike Question 1, however, the solver has no reason to send every customer to their closest
+store. Only the customer(s) with the largest travel time determine $T$. Every other customer may
+travel to any selected store, or split their trips between stores, as long as their travel time
+stays at most $T$. In a split, some individual trips can even be longer than $T$, since $T$ only
+bounds the weighted average. Sending every customer to their closest selected store never
+increases $T$, so this reassignment is also optimal. The distinction matters when we interpret
+the results in Question 4.
+
+%--------------------------------------------------------------------
+\section*{Question 3: Optimization performance}
+\question{Implement both models using \texttt{gurobipy}, test each for $p = 1, \ldots, 10$ with a one-minute time limit, and plot runtime and optimality gap versus $p$. Which model performed better in terms of runtime? Do you think the difference in optimization performance would be an important consideration in practice?}
+
+Both models were implemented in the provided notebook exactly as formulated above and solved with Gurobi~14.0 with a 60-second time limit (\texttt{TimeLimit = 60}). Figure~\ref{fig:runtime-gap} shows runtime and optimality gap versus $p$, and Table~\ref{tab:runtime} lists the runtimes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{part1_runtime_gap.png}
+    \caption{Gurobi runtime (left) and final optimality gap (right) versus the number of selected stores $p$ for the mean-dist (blue) and max-dist (green) models.}
+    \label{fig:runtime-gap}
+\end{figure}
+
+\begin{table}[htbp]
 \centering
-\begin{tabular}{|l|l|l|}
-\hline
-    & \multicolumn{1}{c|}{\textbf{Due Date}} & \multicolumn{1}{c|}{\textbf{Weight}} \\ \hline
-Register Group & 11/11 11:59pm in \href{https://docs.google.com/spreadsheets/d/1Qzpdowc_uBHIe97B-gszYy7gAgAWgxaJapTZxUTM9T8/edit?usp=sharing}{the tracking spreadsheet}     & *\footnote{A small portion of each report grade will be for following submission instructions, including registering your group by 11/11.} \\ \hline
-Part 1 Report  & 11/18 11:59pm on Gradescope            & 35\%                                 \\ \hline
-Part 1 Quiz    & 11/19 in-class                         & 15\%                                 \\ \hline
-Part 2 Report & 11/30 11:59pm on Gradescope             & 35\%                                 \\ \hline
-Part 2 Quiz   & 12/01 in-class                          & 15\%                                 \\ \hline
+\small
+\begin{tabular}{l*{10}{c}c}
+\toprule
+$p$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Total \\ \midrule
+mean-dist runtime (s) & 0.35 & 4.80 & 4.01 & 2.80 & 2.36 & 2.19 & 2.80 & 1.95 & 1.76 & 1.68 & 24.71 \\
+max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70 & 3.18 & 1.43 & 118.52 \\ \bottomrule
 \end{tabular}
-\end{minipage}
+\caption{Runtime for each model and value of $p$. Every run terminated with a proven optimal solution (0\% optimality gap).}
+\label{tab:runtime}
+\end{table}
 
-\subsubsection*{Starter Code and Gurobi Academic License}
-We have created a Jupyter notebook for the project that starter code for data loading, plotting, etc. You can download the notebook \href{https://canvas.cornell.edu/courses/88614/files/folder/project?preview=16397642}{here}. The models in the project are large enough you need a Gurobi Academic License. Follow the instructions \href{https://canvas.cornell.edu/courses/88614/discussion_topics/1102292}{in this post} to setup an academic license. Near the top of the starter code, there is a cell testing that your academic license is setup properly. \textbf{Please check your license is setup properly well in advance of the project deadline.}
+%--------------------------------------------------------------------
+\section*{Question 4: Average and worst-case travel time versus $p$}
+\question{Create a plot showing the average and worst-case travel time for each model and value of $p$. Describe how the average and worst-case customer travel time change as you include more locations in the pilot.}
 
-\subsubsection*{AI Policy}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{part1_mean_max_time.png}
+    \caption{Mean (solid) and maximum (dashed) customer travel time versus $p$ for the mean-dist (blue) and max-dist (green) models. For mean-dist, travel times are measured to each customer's closest selected store. For max-dist, each customer's travel time is the trip-weighted average $\sum_j t_{ij} x_{ij}$ from the model's solution.}
+    \label{fig:mean-max}
+\end{figure}
 
-Excitingly, AI tools have made it easier for people to formulate and implement models as well as visualize, interpret, and share results. While AI speeds up the modeling process, to design optimization models effectively it is important that you i) understand your model formulation, ii) can identify optimization bottlenecks, and iii) can interpret the results with respect to the original problem.\\
+%--------------------------------------------------------------------
+\section*{Question 5: Spatial comparison for $p = 5$}
+\question{Spatially visualize the closest store for each customer and minimum travel time for each customer for both models, including the closest store figure for $p = 5$ for both models. Which model do you think results in a better solution? Justify your answer.}
 
-You are welcome to do the project with or without the assistance of AI. \textbf{At the start of your report, you must specify if and how you used AI.} Like in the rest of the course, you are responsible for the content of your report regardless of whether AI assisted and you cannot use algorithms or methods not discussed in class. You should be able to explain every word, sentence, or argument of your report if asked by an instructor and to be prepared for the quizzes. Each quiz will have 2-3 questions and focus on testing your understanding of the three components above. 
-
-\newpage
-
-
-\subsection*{Part 1: Selecting Stores to Minimize Travel Time} 
-
-Suppose you work for an online retailer looking to partner with a chain of stores to offer in-store pickup and returns to reduce delivery costs. As locations require space and staff time, you want to test a pilot program offering the service at $p$ of the chain's $N$ locations.  \\
-
-To make our notation cleaner, let $[N] = 1, \ldots, N$. Suppose you have data for the $M$ delivery addresses of customers that have purchased from your store in the last 3 months, $x_i, i \in [M]$, and the $N$ locations of potential stores, $y_j, j \in [N]$.
-
-\begin{enumerate}
-    \item Formulate an optimization model to select $p$ stores to minimize the mean (average) distance that a customer needs to travel to a participating store. Let $t_{ij}$ be the travel time for customer $i$ to travel to store $j$. Include your full model in the report, including a written description of what each variable represents.
-
-    \item Formulate an optimization model to select $p$ stores to minimize the worst-case (maximum) customer travel time. Again, include you full model in the report, defining any variables. 
-
-    \item Using the Jupyter notebook provided, implement both models using \verb|gurobipy|. Test each model on the provided data for $p = 1, \ldots, 10$ with a maximum time limit of one minute per value of $p$. Create i) a plot showing runtime versus $p$ and ii) a plot showing optimality gap versus $p$, using separate colors to plot both models on each plot so you can easily compare their performance. Which model performed better in terms of runtime? If both models took the maximum runtime, you can compare the optimality gaps. Do you think the difference in optimization performance between the two models would be an important consideration in practice?
-    
-    \item Fill in the plotting code in the Jupyter notebook to create a plot showing the average and worst-case travel time for each model and value of $p$ and include the plot in your report. Describe how the average and worst-case customer travel time change as you include more locations in the pilot. 
-    
-    \item Using the included plotting code, spatially visualize the closest store for each customer and minimum travel time for each customer for both models, including the closest store figure for $p = 5$ for both models in your report. Which model do you think results in a better solution? Justify your answer.
-
-    \item One of your colleagues is concerned that you used OSRM traffic-free travel times because they think it is unrealistic to assume that there would be no traffic in Manhattan. They suggest using travel distances instead of travel times. Could travel distances easily be incorporated into the model? Explain why or why not, but you do not need to formulate a new model. Do you think using travel distance instead of travel time is an improvement to the model?
-    
-\end{enumerate}
-
-\newpage
-
-\subsection*{Part 2: Selecting Stores Based on Customer Usage}
-
-In your research on pick-up and return locations, you learn that often only a small segment of customers use in-store services. Your company is interested in modifying the model to select stores for the pilot to best serve customers that are likely to use the service.\\
-
-You learn that two teams in your company have developed machine learning models to predict if a particular customer would be likely to use an in-store service. The first team developed a model that predicts whether a customer would use the service at any location (meaning, use it at all) and the second team created a model that makes a separate prediction for whether each customer would use the service at each store/location. Your supervisor is most interested in the second model due to its more detailed predictions, but is worried that using more predicted values could make the optimization slow. So, they want you to develop optimization models using both predictions and compare them.\\
-
-Let $p_i$ be the prediction from the first model that customer $i$ uses the service at all and $p_{ij}$ be the prediction from the second model that customer $i$ uses the service at store $j$.\\
-
-\begin{enumerate}
-    \item Formulate an optimization model to select $p$ locations to minimize expected travel time using the predictions from the model that makes one prediction per customer, $p_i$. Include your full model in the report, defining any new variables.
-    
-    \item Formulate an optimization model to select $p$ locations to maximize the expected number of customers using the service using the predictions for each customer and store, $p_{ij}$. Include your full model in the report, defining any new variables.
-
-    \item Explain why your formulation in the last question could not be used to select stores for the pilot by substituting the $p_{ij}$ values with the $p_i$ values.
-    
-    \item In the Jupyter notebook, implement both models using \verb|gurobipy|. Test each model on the provided data for $p = 1, \ldots, 10$ with a maximum time limit of one minute per value of $p$. Create plots of runtime versus $p$ and optimality gap versus $p$, using separate colors to plot both models on the same plot so you can easily compare their performance. Which model performed better in terms of runtime? Was your supervisor correct to be concerned about the runtime of the model with the larger number of predictions? 
-    
-    \item Fill in the plotting code in the Jupyter notebook to create i) a plot showing the expected number of customers using the service for each value of $p$ and ii) a plot showing the expected travel distance for each value of $p$. Describe how these values relate to each of the optimization models as well as the goal of running an in-store pilot program.
-    
-    \item Using the plotting code in the Jupyter notebook, visualize the store each customer is assigned to for each model and include the figure for $p = 5$ for each model in your report. Do customers seem to generally prefer the closest store by distance?
-
-    \item A colleague from the team that trained the model that predicts whether a customer will use the service at all ($p_i$) says that their team tried predicting whether each customer would use each store but found that the model produced small noisy predictions. They believe this happened because almost all of the labels are zero, i.e. in more cases a customer would not use the service at a specific score. To see this, consider that even if every customer used the service but at just one store, $35/36 = 97\%$ of labels would be zero. Could this be an issue for the predictions from the other team's model? How would that impact the optimization?
-    
-    \item Which of the four models would you recommend using to select stores for the pilot? How many stores do you think should be selected? Justify your answer. 
-
-\end{enumerate}
-
+%--------------------------------------------------------------------
+\section*{Question 6: Travel distance instead of travel time}
+\question{A colleague suggests using travel distances instead of OSRM traffic-free travel times. Could travel distances easily be incorporated into the model? Do you think using travel distance instead of travel time is an improvement to the model?}
 
 \end{document}
