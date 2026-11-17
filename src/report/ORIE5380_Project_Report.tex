@@ -137,7 +137,6 @@ $T$ and gives the nearest-store travel times requested for reporting.
 
 %--------------------------------------------------------------------
 \section*{Question 3: Optimization performance}
-\question{Implement both models using \texttt{gurobipy}, test each for $p = 1, \ldots, 10$ with a one-minute time limit, and plot runtime and optimality gap versus $p$. Which model performed better in terms of runtime? Do you think the difference in optimization performance would be an important consideration in practice?}
 
 We tested the two models for $p=1,\ldots,10$ and found that all runs reached a 0\% optimality gap within our 60-second time limit (see Figure~\ref{fig:runtime-gap}, right). Overall, minimizing mean travel time was slightly faster than minimizing maximum travel time. Across all values of $p$, the mean model took 70.67 seconds, whereas the worst-case model took 82.08 seconds. The difference is most noticeable for $p=2,3,4$, as shown in Figure~\ref{fig:runtime-gap} (left). Here, runtime was not a serious concern when choosing between the models.
 
@@ -163,7 +162,6 @@ max-dist runtime (s) & 2.30 & 26.54 & 19.05 & 19.77 & 3.14 & 3.23 & 2.98 & 1.75 
 
 %--------------------------------------------------------------------
 \section*{Question 4: Average and worst-case travel time versus $p$}
-\question{Create a plot showing the average and worst-case travel time for each model and value of $p$. Describe how the average and worst-case customer travel time change as you include more locations in the pilot.}
 
 \begin{figure}[htbp]
     \centering
@@ -180,10 +178,8 @@ Figure~\ref{fig:mean-max} also shows that the worst-case model has a smaller gap
 
 %--------------------------------------------------------------------
 \section*{Question 5: Spatial comparison for $p = 5$}
-\question{Spatially visualize the closest store for each customer and minimum travel time for each customer for both models, including the closest store figure for $p = 5$ for both models. Which model do you think results in a better solution? Justify your answer.}
 
 %--------------------------------------------------------------------
 \section*{Question 6: Travel distance instead of travel time}
-\question{A colleague suggests using travel distances instead of OSRM traffic-free travel times. Could travel distances easily be incorporated into the model? Do you think using travel distance instead of travel time is an improvement to the model?}
 
 \end{document}
