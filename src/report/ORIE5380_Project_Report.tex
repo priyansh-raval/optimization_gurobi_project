@@ -175,6 +175,96 @@ Figure~\ref{fig:mean-max} also shows that the worst-case model has a smaller gap
 %--------------------------------------------------------------------
 \section*{Question 5: Spatial comparison for $p = 5$}
 
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[t]{0.36\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{mean-dist-closest.png}
+        \caption{mean-dist: closest selected store}
+        \label{fig:map-mean-store}
+    \end{subfigure}\hspace{0.04\textwidth}
+    \begin{subfigure}[t]{0.36\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{max-dist-closest.png}
+        \caption{max-dist: closest selected store}
+        \label{fig:map-max-store}
+    \end{subfigure}
+
+    \medskip
+    \begin{subfigure}[t]{0.36\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{mean-dist-min.png}
+        \caption{mean-dist: minimum travel time}
+        \label{fig:map-mean-time}
+    \end{subfigure}\hspace{0.04\textwidth}
+    \begin{subfigure}[t]{0.36\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{max-dist-min.png}
+        \caption{max-dist: minimum travel time}
+        \label{fig:map-max-time}
+    \end{subfigure}
+    \caption{The $p = 5$ solutions of both models, drawn with the notebook's 
+    \texttt{plot\_map}. Top: customers colored by their closest selected store; 
+    grey markers are unselected stores. Bottom: customers colored by their travel time to the 
+    closest selected store; red markers are the selected stores. The color scales of (c) and (d) differ, 
+    since their maximum travel times are 31.7 and 25.4~min.}
+    \label{fig:maps}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+ & mean-dist ($p = 5$) & max-dist ($p = 5$) \\ \midrule
+Selected stores & 1, 7, 23, 31, 35 & 1, 7, 16, 24, 31 \\
+Customers per store & 838, 570, 822, 133, 637 & 1,270, 705, 439, 434, 152 \\
+Mean travel time & 9.29 min & 11.28 min \\
+Median travel time & 9.30 min & 10.90 min \\
+Maximum travel time & 31.7 min & 25.4 min \\
+Customers travelling more than 15 min & 6.3\% & 22.6\% \\
+Customers travelling more than 20 min & 1.6\% & 3.2\% \\ \bottomrule
+\end{tabular}
+\caption{Comparison of the $p = 5$ solutions. All travel times are to each customer's closest 
+selected store.}
+\label{tab:p5}
+\end{table}
+
+Figure~\ref{fig:maps} shows the two $p = 5$ solutions and Table~\ref{tab:p5} summarizes them. 
+Both models select thee of the same stores:
+\begin{itemize}
+    \item Store 1 (lower Manhattan)
+    \item Store 7 (upper Manhattan)
+    \item Store 31 (Staten Island)
+\end{itemize}
+But the more interesting analysis is how the models differ in their selection of the other two stores.
+
+The `mean-dist' model places the other two stores at the centers of the two other large customer 
+clusters: store 23 in central Brooklyn and store 35 in Queens (Figure~\ref{fig:map-mean-store}). 
+Customers are split fairly evenly across stores 1, 7, 23 and 35, and 60\% of customers are within 
+10~minutes of a pilot store (Figure~\ref{fig:map-mean-time}).
+
+
+However, our `max-dist' moves them south-east, to store 16 in eastern Brooklyn and store 24 in southern 
+Brooklyn (Figure~\ref{fig:map-max-store}). It does this to reach the most remote customers on the 
+south-eastern edge of the region. Store 16 is the closest pilot store for the 25.4-minute 
+bottleneck customer. But a result, this model leaves Queens without a pilot store. The 637 customers 
+that `mean-dist' serves from store 35 are split between stores 16, 1 and 7, and their average travel time 
+rises from 11.3 to 16.5~minutes (the green and yellow area in Figure~\ref{fig:map-max-time}). Store 1 
+becomes the closest pilot store for 1,270 customers (42\% of all customers), and the share of customers 
+with a trip longer than 15~minutes rises from 6.3\% to 22.6\%. The `mean-dist' model's worst case comes 
+from the same remote edge: its 31.7-minute customer is in the Rockaways (the yellow strip in 
+Figure~\ref{fig:map-mean-time}).
+
+
+We can confidently say, \textbf{the mean-dist solution is better for this pilot.} This is because the goal
+of this pilot is to reduce delivery costs by getting the \emph{most} customers to use in-store pickup and
+returns. We want to situate the stores in the highest customer densities rather than accomodating access to
+every possible customer. We can see this in the results of the optimization as the average travel time for
+this model is 9.29~min, 18\% lower than `max-dist' model's 11.28~min. And more so, only 6.3\% of customers 
+have to travel more than 15~minutes compared with 22.6\%. What we sacrifice is the maximum time for the 
+worst-case customers that is 6.3~min longer (31.7 vs.\ 25.4~min) and only 1.6\% of customers even have 
+trips over 20~min.
 %--------------------------------------------------------------------
 \section*{Question 6: Travel distance instead of travel time}
 
