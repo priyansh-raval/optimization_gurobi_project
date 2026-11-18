@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage[letterpaper, text={6.875in,8.875in}, top=1in]{geometry}
+\usepackage{times}     % Times text font, as in the sample
+\usepackage{booktabs}  % \toprule / \midrule / \bottomrule tables
+\usepackage{titlesec}
+\usepackage{amssymb}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{accents}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{parskip}  % blank line in the source = visible gap between paragraphs, no indent
+\captionsetup{font=small, labelsep=period}  % "Table 1." / "Figure 1." small captions
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+
+\definecolor{urlBlue}{rgb}{0.21,0.49,0.74}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=urlBlue,    % Color of internal links (sections, pages)
+    urlcolor=urlBlue,     % Color of URL links (web addresses)
+    citecolor=urlBlue     % Color of citation links
+}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\sol}{\text{sol}}
+
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\norm}[2]{\left\lVert#1\right\rVert\right_{#2}}
+
+\setlength{\parindent}{0pt}
+\raggedbottom  % don't stretch paragraph gaps to fill each column
+\pagestyle{empty}  % no page numbers
+
+% Section headings like the sample: large bold, flush left
+\titleformat*{\section}{\large\bfseries}
+\titlespacing*{\section}{0pt}{12pt plus 3pt minus 2pt}{6pt}
+
+\graphicspath{{figures/}}
+
+\newcommand{\question}[1]{\par\medskip\noindent\textit{#1}\par\smallskip}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries ORIE 5380 Course Project Report: Part 2 \par}
+\vspace{1.2em}
+{\normalsize David Johnson (dmj68), Priyansh Raval (pr496) \par}
+\vspace{0.4em}
+{\small\url{https://github.com/priyansh-raval/optimization_gurobi_project.git} \par}
+\vspace{2em}
+\end{center}
+
+% Boilerplate only: replace every TODO before submission.
+\newcommand{\todo}[1]{\par\textcolor{urlBlue}{\textbf{TODO:} #1}\par}
+\newcommand{\figureplaceholder}[1]{%
+  \begin{center}\fbox{\parbox[c][1.0in][c]{0.90\textwidth}{\centering #1}}\end{center}}
+
+\textbf{Use of AI.}
+\todo{Describe whether and how AI was used for Part 2, including this report scaffold, formulations, coding, and analysis. Verify that all methods were covered in class and that you can explain the report in full.}
+
+\section*{Notation and Setup}
+Select $p$ of $N$ stores for $M$ customers. Let $t_{ij}$ denote travel time from customer $i$ to store $j$, $p_i$ the predicted probability that customer $i$ uses the service at all, and $p_{ij}$ the predicted probability that customer $i$ uses the service at store $j$. The store count $p$ is distinct from these probabilities.
+\todo{Define any additional notation, distance data, units, and assumptions used in the formulations and evaluation.}
+
+\section*{Question 1: Minimize Expected Travel Time}
+\question{Formulate a model using the customer-level predictions $p_i$.}
+\subsection*{Decision Variables}
+\todo{Define each decision variable, its indices, domain, and meaning. Reuse Part 1 notation where appropriate.}
+\subsection*{Objective Function}
+\todo{Write the expected-travel-time objective using $p_i$ and $t_{ij}$. Specify whether the quantity is a total or a normalized average and explain any normalization.}
+\subsection*{Constraints}
+\todo{Include the full model: selection of exactly $p$ stores, customer assignment, linking assignments to selected stores, and variable domains. Explain each constraint.}
+
+\section*{Question 2: Maximize Expected Customer Usage}
+\question{Formulate a model using the customer--store predictions $p_{ij}$.}
+\subsection*{Decision Variables}
+\todo{Define all variables, including any new variables and their domains. State how a customer's assigned store is chosen.}
+\subsection*{Objective Function}
+\todo{Write and explain the expected-number-of-users objective using $p_{ij}$. Explain how the model avoids counting the same customer more than once.}
+\subsection*{Constraints}
+\todo{Provide the complete model, including store selection, assignment, linking constraints, and variable domains.}
+
+\section*{Question 3: Substituting Customer-Level Predictions}
+\question{Why can the Question 2 formulation not select stores meaningfully by replacing $p_{ij}$ with $p_i$?}
+\todo{Substitute the probabilities algebraically into your objective and use the assignment constraints to explain what information about store choice remains. Discuss why the two prediction types support different objectives.}
+
+\section*{Question 4: Optimization Performance}
+\question{Implement both models in \texttt{gurobipy} and test $p=1,\ldots,10$, with a 60-second time limit per model and value of $p$.}
+\todo{Record solver settings, runtime, termination status, and final optimality gap. Identify any run without a feasible incumbent and do not report it as an optimal solution.}
+\figureplaceholder{Insert runtime versus $p$ and optimality gap versus $p$.\\Use distinct, consistent colors for the two models on each plot.}
+\todo{Compare runtimes and, where limits are reached, optimality gaps. Was the supervisor's concern about the larger number of predictions supported by the results? Explain using measured performance.}
+
+\clearpage
+\section*{Question 5: Expected Usage and Travel Distance}
+\question{Plot expected customer usage and expected travel distance versus $p$ for both models.}
+\figureplaceholder{Insert expected number of customers using the service versus $p$.}
+\figureplaceholder{Insert expected travel distance versus $p$, with units.}
+\todo{Define the evaluation formulas and probability weights used for each metric, consistent with the notebook. Distinguish travel distance requested here from travel time optimized in Question 1.}
+\todo{Describe trends and tradeoffs, relate them to each model's objective, and explain how they support the pilot's goals.}
+
+\section*{Question 6: Spatial Comparison for $p=5$}
+\question{Visualize the store each customer is assigned to under each model.}
+\figureplaceholder{Insert assigned-store maps for $p=5$, one per model.\\Label selected stores and provide clear legends.}
+\todo{List selected stores and compare geographic assignment patterns. Do customers generally prefer the closest store by distance? Support the answer using the maps and, if useful, a quantitative comparison.}
+
+\clearpage
+\section*{Question 7: Noisy Predictions and Class Imbalance}
+\question{Could small, noisy predictions caused by mostly zero customer--store labels affect the second team's model?}
+\todo{Discuss the class-imbalance concern: even if every customer used exactly one of 36 stores, $35/36\approx97\%$ of customer--store labels would be zero. Explain how prediction error could affect store selection, assignment, expected usage estimates, and realized pilot outcomes. Distinguish prediction quality from solver optimality and justify any proposed checks using course material.}
+
+\section*{Question 8: Recommendation Across All Four Models}
+\question{Which model and how many stores would you recommend for the pilot?}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.31\textwidth}p{0.32\textwidth}@{}}
+\toprule
+\textbf{Model} & \textbf{Main benefit} & \textbf{Main tradeoff} \\
+\midrule
+Part 1: mean travel time & TODO & TODO \\
+Part 1: worst-case travel time & TODO & TODO \\
+Part 2: expected travel time & TODO & TODO \\
+Part 2: expected customer usage & TODO & TODO \\
+\bottomrule
+\end{tabular}
+\end{center}
+\todo{Recommend one of the four models and a specific store count $p$. Use Part 1 and Part 2 results to weigh customer convenience, participation, geographic coverage, diminishing returns, operational cost, runtime, and prediction reliability as relevant. State limitations and avoid inventing cost estimates or results.}
+
+% Submission: Part 2 PDF due November 30, 2026, 11:59pm on Gradescope.
+\end{document}

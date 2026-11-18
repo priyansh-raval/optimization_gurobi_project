@@ -28,3 +28,18 @@ The input CSV files are included in `src/data`. The assignment instructions are 
 ## Gurobi license
 
 Installing `gurobipy` installs the Python solver interface, but the notebook's 10,000-variable license test requires a license that permits that model size. Configure your Gurobi academic or other suitable license before running it. Keep license files and credentials outside the repository.
+
+## Reports
+
+LaTeX sources and compiled PDFs are in `src/report`:
+
+- `ORIE5380_Project_Report_1.tex`: completed Part 1 report.
+- `ORIE5380_Project_Report_2.tex`: Part 2 boilerplate; replace all TODOs and figure placeholders before submission.
+
+Compile from `src/report` so figure paths resolve:
+
+```sh
+cd src/report
+pdflatex -interaction=nonstopmode -halt-on-error ORIE5380_Project_Report_1.tex
+pdflatex -interaction=nonstopmode -halt-on-error ORIE5380_Project_Report_2.tex
+```
