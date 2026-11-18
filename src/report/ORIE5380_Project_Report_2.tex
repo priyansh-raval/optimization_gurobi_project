@@ -60,30 +60,85 @@
   \begin{center}\fbox{\parbox[c][1.0in][c]{0.90\textwidth}{\centering #1}}\end{center}}
 
 \textbf{Use of AI.}
-\todo{Describe whether and how AI was used for Part 2, including this report scaffold, formulations, coding, and analysis. Verify that all methods were covered in class and that you can explain the report in full.}
-
-\section*{Notation and Setup}
-Select $p$ of $N$ stores for $M$ customers. Let $t_{ij}$ denote travel time from customer $i$ to store $j$, $p_i$ the predicted probability that customer $i$ uses the service at all, and $p_{ij}$ the predicted probability that customer $i$ uses the service at store $j$. The store count $p$ is distinct from these probabilities.
-\todo{Define any additional notation, distance data, units, and assumptions used in the formulations and evaluation.}
+Like for Report 1, we chose what to change in the theoretical formulation of the models
+and used Claude and ChatGPT to implment them. We also used ChatGPT to formate and provide feedback on this report.
 
 \section*{Question 1: Minimize Expected Travel Time}
-\question{Formulate a model using the customer-level predictions $p_i$.}
-\subsection*{Decision Variables}
-\todo{Define each decision variable, its indices, domain, and meaning. Reuse Part 1 notation where appropriate.}
-\subsection*{Objective Function}
-\todo{Write the expected-travel-time objective using $p_i$ and $t_{ij}$. Specify whether the quantity is a total or a normalized average and explain any normalization.}
-\subsection*{Constraints}
-\todo{Include the full model: selection of exactly $p$ stores, customer assignment, linking assignments to selected stores, and variable domains. Explain each constraint.}
 
+Select $p$ of $N$ stores to minimize travel time per expected user among $M$ customers.
+Let $[M]=\{1,\ldots,M\}$ and $[N]=\{1,\ldots,N\}$, and let $t_{ij}$ be the travel time in minutes from customer $i$ to store $j$.
+The fixed prediction $p_i\in[0,1]$ is the probability that customer $i$ uses the service at all.
+
+\subsection*{Decision Variables}
+\[
+y_j = \begin{cases}
+1 & \text{if store $j$ is selected},\\
+0 & \text{otherwise},
+\end{cases}
+\qquad
+x_{ij} = \begin{cases}
+1 & \text{if customer $i$ is assigned to store $j$},\\
+0 & \text{otherwise}.
+\end{cases}
+\]
+Both variables are binary, for all $i\in[M]$ and $j\in[N]$.
+
+\subsection*{Objective Function}
+\begin{equation}
+\min_{y,x}\quad \frac{1}{\sum_{i=1}^{M}p_i}\sum_{i=1}^{M}\sum_{j=1}^{N}p_i t_{ij}x_{ij}.
+\label{eq:expected-time}
+\end{equation}
+This minimizes travel time per expected user, in minutes. We assume $\sum_i p_i>0$ so that this is well-defined.
+Strictly speaking, this constant division doesn't change our answer, so it could always be dropped if equal to 0.
+
+\subsection*{Constraints}
+\begin{center}
+\begin{tabular}{@{}p{0.49\textwidth}p{0.47\textwidth}@{}}
+\toprule
+\textbf{Constraint} & \textbf{What it enforces} \\
+\midrule
+$\sum_{j=1}^{N}y_j=p$ & Select exactly $p$ stores. \\[6pt]
+$\sum_{j=1}^{N}x_{ij}=1\quad \forall i\in[M]$ & Assign each customer to exactly one store. \\[6pt]
+$x_{ij}\le y_j\quad \forall i\in[M],\ j\in[N]$ & Allow assignments only to selected stores. \\[6pt]
+$y_j\in\{0,1\}\quad \forall j\in[N]$ & Make store selection binary. \\[6pt]
+$x_{ij}\in\{0,1\}\quad \forall i\in[M],\ j\in[N]$ & Make customer assignments binary. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
 \section*{Question 2: Maximize Expected Customer Usage}
-\question{Formulate a model using the customer--store predictions $p_{ij}$.}
-\subsection*{Decision Variables}
-\todo{Define all variables, including any new variables and their domains. State how a customer's assigned store is chosen.}
-\subsection*{Objective Function}
-\todo{Write and explain the expected-number-of-users objective using $p_{ij}$. Explain how the model avoids counting the same customer more than once.}
-\subsection*{Constraints}
-\todo{Provide the complete model, including store selection, assignment, linking constraints, and variable domains.}
 
+Select $p$ stores to maximize the expected number of customers using the service.
+Let $p_{ij}\in[0,1]$ be the fixed predicted probability that customer $i$ uses the service when assigned to store $j$.
+
+\subsection*{Decision Variables}
+Use the same binary variables $y_j$ and $x_{ij}$ from Question 1.
+
+\subsection*{Objective Function}
+\begin{equation}
+\max_{y,x}\quad \sum_{i=1}^{M}\sum_{j=1}^{N}p_{ij}x_{ij}.
+\label{eq:expected-usage}
+\end{equation}
+This maximizes the expected number of users. Each customer is assigned to a selected store
+with the highest $p_{ij}$, which doesn't necessarily mean the closest store.
+
+\subsection*{Constraints}
+\begin{center}
+\begin{tabular}{@{}p{0.49\textwidth}p{0.47\textwidth}@{}}
+\toprule
+\textbf{Constraint} & \textbf{What it enforces} \\
+\midrule
+$\sum_{j=1}^{N}y_j=p$ & Select exactly $p$ stores. \\[6pt]
+$\sum_{j=1}^{N}x_{ij}=1\quad \forall i\in[M]$ & Assign each customer to exactly one store. \\[6pt]
+$x_{ij}\le y_j\quad \forall i\in[M],\ j\in[N]$ & Allow assignments only to selected stores. \\[6pt]
+$y_j\in\{0,1\}\quad \forall j\in[N]$ & Make store selection binary. \\[6pt]
+$x_{ij}\in\{0,1\}\quad \forall i\in[M],\ j\in[N]$ & Make customer assignments binary. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
 \section*{Question 3: Substituting Customer-Level Predictions}
 \question{Why can the Question 2 formulation not select stores meaningfully by replacing $p_{ij}$ with $p_i$?}
 \todo{Substitute the probabilities algebraically into your objective and use the assignment constraints to explain what information about store choice remains. Discuss why the two prediction types support different objectives.}
