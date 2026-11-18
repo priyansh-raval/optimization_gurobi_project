@@ -2,7 +2,7 @@ PWD /Users/david/Desktop/opt_project/src/report
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT ORIE5380_Project_Report.tex
+INPUT /Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex
 OUTPUT ORIE5380_Project_Report.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
@@ -251,13 +251,10 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/times/ptmr8c.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
 INPUT ORIE5380_Project_Report.aux
 INPUT ./ORIE5380_Project_Report.out
 INPUT ./ORIE5380_Project_Report.out
@@ -274,4 +271,3 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmri8a.pfb
