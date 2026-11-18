@@ -248,7 +248,7 @@ Customers are split fairly evenly across stores 1, 7, 23 and 35, and approximate
 However, our `max-dist' moves them south-east, to store 16 in eastern Brooklyn and store 24 in southern 
 Brooklyn (Figure~\ref{fig:map-max-store}). It does this to reach the most remote customers on the 
 south-eastern edge of the region. Store 16 is the closest pilot store for the 25.4-minute 
-bottleneck customer. But a result, this model leaves Queens without a pilot store. The 637 customers 
+bottleneck customer. As a result, this model leaves Queens without a pilot store. The 637 customers 
 that `mean-dist' serves from store 35 are split between stores 16, 1, 7, and 24, and their average travel time 
 rises from 11.3 to 16.5~minutes (the green and yellow area in Figure~\ref{fig:map-max-time}). Store 1 
 becomes the closest pilot store for 1,270 customers (42\% of all customers), and the share of customers 
@@ -259,18 +259,18 @@ Figure~\ref{fig:map-mean-time}).
 
 We recommend the mean-dist solution for this pilot because it offers shorter trips for most customers, which may encourage participation and help reduce delivery costs. Compared with the max-dist solution, it increases the share of customers within 15~minutes of a pilot store from 77.4\% to 93.7\% and reduces average travel time by 18\%, from 11.28 to 9.29~minutes. The tradeoff is a longer maximum trip: 31.7 rather than 25.4~minutes. However, only 1.6\% of customers face trips longer than 20~minutes. For this pilot, we believe improving convenience for more customers outweighs reducing the longest trip by 6.3~minutes.
 %--------------------------------------------------------------------
+\par\medskip\noindent\begin{minipage}{\textwidth}
 \section*{Question 6: Travel distance instead of travel time}
 
-Travel distances can easily be incorporated into the model. We are currently using a travel time data,
-$t_{ij}$, appearing in the models as coefficients in the objective~\eqref{eq:mean-obj} the mean-dist model 
-and the contraints of the max-dist model. None of the decision variables nor the structure of the 
-constraints depend on what $t_{ij}$ measures. Thus, we can easily replace it with a travel distance, $d_{ij}$.
+Travel distances can easily be incorporated by replacing $t_{ij}$ with distances
+$d_{ij}$ in the mean model's objective and the worst-case model's travel constraints.
+The decision variables and remaining constraints stay unchanged, and $T$ represents
+maximum travel distance rather than time.
 
-Doing so does not impact the rest of the model's constraints. Which also means we can expect similar solve times.
-Though, sourcing the data could prove to be annoying.
-
-Using travel distance to travel time doesn't address my colleagues concerns because distance 
-measurements have no impact on the traffic-informed travel times which they are so worried about. In fact, distance measures
-will assume constant travel time.
+However, using distance is not necessarily an improvement. It avoids relying on
+traffic-free travel-time estimates, but does not capture congestion or how long
+customers spend traveling. Since customer convenience depends on travel time,
+traffic-aware travel-time estimates would address the colleague's concern more directly.
+\end{minipage}
 
 \end{document}

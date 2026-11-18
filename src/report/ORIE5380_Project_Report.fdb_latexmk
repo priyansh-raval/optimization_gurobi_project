@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1794961969.0927 "/Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex" "ORIE5380_Project_Report.pdf" "ORIE5380_Project_Report" 1794961970.52801 0
-  "/Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex" 1794961968.83935 13631 639b0237cd38034b45e9fde81e15e0db ""
+["pdflatex"] 1794962326.1817 "/Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex" "ORIE5380_Project_Report.pdf" "ORIE5380_Project_Report" 1794962327.57934 0
+  "/Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex" 1794962324.56377 13460 4ed8ccadf5eac2d3aa5eb11fb4eece60 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -122,9 +122,9 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1777049962 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774209607 3636776 dc5fa9b6b1453b9d196cd42edf876004 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "ORIE5380_Project_Report.aux" 1794961970.44192 3883 4dc0405edeb84f7208121284ffb2aa7a "pdflatex"
-  "ORIE5380_Project_Report.out" 1794961969.57394 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "ORIE5380_Project_Report.tex" 1794961968.83935 13631 639b0237cd38034b45e9fde81e15e0db ""
+  "ORIE5380_Project_Report.aux" 1794962327.5037 3883 a7f2879a06ae2ce058c40b31503c34e6 "pdflatex"
+  "ORIE5380_Project_Report.out" 1794962326.63031 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "ORIE5380_Project_Report.tex" 1794962324.56377 13460 4ed8ccadf5eac2d3aa5eb11fb4eece60 ""
   "figures/max-dist-closest.png" 1794960557.62773 330231 47566d9421b1b952f125ec3bd8be27c1 ""
   "figures/max-dist-min.png" 1794960557.62882 348307 c6abcda0b5c8a72fddbff2177a277216 ""
   "figures/mean-dist-closest.png" 1794960557.6306 329026 fa2cf00ecb3aeaeb64148cebed151e28 ""
