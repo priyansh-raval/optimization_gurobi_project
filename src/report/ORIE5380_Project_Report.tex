@@ -59,7 +59,7 @@ We formulated the models ourselves on a whiteboard, then used Anthropic's Claude
 \section*{Question 1: Minimize Mean Travel Time}
 
 Select $p$ of $N$ stores to minimize the average travel time of $M$ customers.
-Let $t_{ij}$ be the travel time from customer $i$ to store $j$.
+Let $[M]=\{1,\ldots,M\}$ and $[N]=\{1,\ldots,N\}$ index customers and stores, and let $t_{ij}$ be the travel time from customer $i$ to store $j$.
 
 \subsection*{Decision Variables}
 \[
@@ -112,7 +112,7 @@ $T\ge0$ bounding every customer's assigned travel time.
 \min_{y,x,T}\quad T.
 \label{eq:max-obj}
 \end{equation}
-This minimizes the worst-case customer travel time.
+This minimizes the worst-case customer travel time; at optimality, $T$ equals the largest assigned travel time.
 
 \subsection*{Constraints}
 \begin{center}
@@ -137,14 +137,13 @@ $T$ and gives the nearest-store travel times requested for reporting.
 
 %--------------------------------------------------------------------
 \section*{Question 3: Optimization performance}
-\question{Implement both models using \texttt{gurobipy}, test each for $p = 1, \ldots, 10$ with a one-minute time limit, and plot runtime and optimality gap versus $p$. Which model performed better in terms of runtime? Do you think the difference in optimization performance would be an important consideration in practice?}
 
-The existing notebook results use continuous assignment variables $x_{ij}\in[0,1]$, rather than the binary assignments formulated above. The continuous formulations have the same optimal objective values, but their runtimes do not measure the binary formulations. These runs used Gurobi~14.0 with a 60-second time limit (\texttt{TimeLimit = 60}). Figure~\ref{fig:runtime-gap} shows runtime and optimality gap versus $p$, and Table~\ref{tab:runtime} lists the runtimes.
+We tested the two models for $p=1,\ldots,10$ and found that all runs reached a 0\% optimality gap within our 60-second time limit (see Figure~\ref{fig:runtime-gap}, right). The mean model was slightly faster in total, mainly because the worst-case model took longer at $p=2,3,4$. Across all values of $p$, the mean model took 70.67 seconds, whereas the worst-case model took 82.08 seconds. Here, runtime was not a serious concern when choosing between the models.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{part1_runtime_gap.png}
-    \caption{Gurobi runtime (left) and final optimality gap (right) versus the number of selected stores $p$ for the mean-dist (blue) and max-dist (green) models.}
+    \caption{Binary-model Gurobi runtime (left) and final optimality gap (right) versus the number of selected stores $p$ for the mean-dist (blue) and max-dist (green) models.}
     \label{fig:runtime-gap}
 \end{figure}
 
@@ -154,8 +153,8 @@ The existing notebook results use continuous assignment variables $x_{ij}\in[0,1
 \begin{tabular}{l*{10}{c}c}
 \toprule
 $p$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & Total \\ \midrule
-mean-dist runtime (s) & 0.35 & 4.80 & 4.01 & 2.80 & 2.36 & 2.19 & 2.80 & 1.95 & 1.76 & 1.68 & 24.71 \\
-max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70 & 3.18 & 1.43 & 118.52 \\ \bottomrule
+mean-dist runtime (s) & 11.03 & 10.46 & 17.90 & 5.18 & 4.32 & 4.23 & 7.75 & 3.76 & 3.19 & 2.85 & 70.67 \\
+max-dist runtime (s) & 2.30 & 26.54 & 19.05 & 19.77 & 3.14 & 3.23 & 2.98 & 1.75 & 1.71 & 1.60 & 82.08 \\ \bottomrule
 \end{tabular}
 \caption{Runtime for each model and value of $p$. Every run terminated with a proven optimal solution (0\% optimality gap).}
 \label{tab:runtime}
@@ -163,7 +162,6 @@ max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70
 
 %--------------------------------------------------------------------
 \section*{Question 4: Average and worst-case travel time versus $p$}
-\question{Create a plot showing the average and worst-case travel time for each model and value of $p$. Describe how the average and worst-case customer travel time change as you include more locations in the pilot.}
 
 \begin{figure}[htbp]
     \centering
@@ -172,102 +170,16 @@ max-dist runtime (s)  & 0.44 & 17.53 & 49.66 & 22.39 & 6.67 & 9.58 & 3.93 & 3.70
     \label{fig:mean-max}
 \end{figure}
 
+The average and worst-case travel times generally decrease as we include more locations in the pilot, which makes sense. From $p=1$ to $p=10$, the mean-travel-time model's average falls from 18.12 to 7.34 minutes, while its maximum falls from 56.00 to 29.40 minutes. The worst-case model's average falls from 18.97 to 8.82 minutes, and its maximum falls from 45.80 to 25.40 minutes. This effect can be seen in Figure~\ref{fig:mean-max}.
+
+The largest improvements occur as $p$ increases from 1 to 5, with more modest improvements afterward. In particular, the worst-case model's maximum stays at 25.40 minutes for $p\ge5$. This reflects saturation: even selecting all 36 stores cannot improve the maximum travel time on this dataset.
+
+Figure~\ref{fig:mean-max} also shows that the worst-case model has a smaller gap between its mean and maximum travel times. Its maximum is lower, but its mean is higher than the mean model's. This illustrates the tradeoff between reducing average travel time and protecting the customers with the longest trips.
+
 %--------------------------------------------------------------------
 \section*{Question 5: Spatial comparison for $p = 5$}
 
-\begin{figure}[!htb]
-    \centering
-    \begin{subfigure}[t]{0.36\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{mean-dist-closest.png}
-        \caption{mean-dist: closest selected store}
-        \label{fig:map-mean-store}
-    \end{subfigure}\hspace{0.04\textwidth}
-    \begin{subfigure}[t]{0.36\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{max-dist-closest.png}
-        \caption{max-dist: closest selected store}
-        \label{fig:map-max-store}
-    \end{subfigure}
-
-    \medskip
-    \begin{subfigure}[t]{0.36\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{mean-dist-min.png}
-        \caption{mean-dist: minimum travel time}
-        \label{fig:map-mean-time}
-    \end{subfigure}\hspace{0.04\textwidth}
-    \begin{subfigure}[t]{0.36\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{max-dist-min.png}
-        \caption{max-dist: minimum travel time}
-        \label{fig:map-max-time}
-    \end{subfigure}
-    \caption{The $p = 5$ solutions of both models, drawn with the notebook's 
-    \texttt{plot\_map}. Top: customers colored by their closest selected store; 
-    grey markers are unselected stores. Bottom: customers colored by their travel time to the 
-    closest selected store; red markers are the selected stores. The color scales of (c) and (d) differ, 
-    since their maximum travel times are 31.7 and 25.4~min.}
-    \label{fig:maps}
-\end{figure}
-
-\begin{table}[htbp]
-\centering
-\small
-\begin{tabular}{lll}
-\toprule
- & mean-dist ($p = 5$) & max-dist ($p = 5$) \\ \midrule
-Selected stores & 1, 7, 23, 31, 35 & 1, 7, 16, 24, 31 \\
-Customers per store & 838, 570, 822, 133, 637 & 1,270, 705, 439, 434, 152 \\
-Mean travel time & 9.29 min & 11.28 min \\
-Median travel time & 9.30 min & 10.90 min \\
-Maximum travel time & 31.7 min & 25.4 min \\
-Customers travelling more than 15 min & 6.3\% & 22.6\% \\
-Customers travelling more than 20 min & 1.6\% & 3.2\% \\ \bottomrule
-\end{tabular}
-\caption{Comparison of the $p = 5$ solutions. All travel times are to each customer's closest 
-selected store.}
-\label{tab:p5}
-\end{table}
-
-Figure~\ref{fig:maps} shows the two $p = 5$ solutions and Table~\ref{tab:p5} summarizes them. 
-Both models select thee of the same stores:
-\begin{itemize}
-    \item Store 1 (lower Manhattan)
-    \item Store 7 (upper Manhattan)
-    \item Store 31 (Staten Island)
-\end{itemize}
-But the more interesting analysis is how the models differ in their selection of the other two stores.
-
-The `mean-dist' model places the other two stores at the centers of the two other large customer 
-clusters: store 23 in central Brooklyn and store 35 in Queens (Figure~\ref{fig:map-mean-store}). 
-Customers are split fairly evenly across stores 1, 7, 23 and 35, and 60\% of customers are within 
-10~minutes of a pilot store (Figure~\ref{fig:map-mean-time}).
-
-
-However, our `max-dist' moves them south-east, to store 16 in eastern Brooklyn and store 24 in southern 
-Brooklyn (Figure~\ref{fig:map-max-store}). It does this to reach the most remote customers on the 
-south-eastern edge of the region. Store 16 is the closest pilot store for the 25.4-minute 
-bottleneck customer. But a result, this model leaves Queens without a pilot store. The 637 customers 
-that `mean-dist' serves from store 35 are split between stores 16, 1 and 7, and their average travel time 
-rises from 11.3 to 16.5~minutes (the green and yellow area in Figure~\ref{fig:map-max-time}). Store 1 
-becomes the closest pilot store for 1,270 customers (42\% of all customers), and the share of customers 
-with a trip longer than 15~minutes rises from 6.3\% to 22.6\%. The `mean-dist' model's worst case comes 
-from the same remote edge: its 31.7-minute customer is in the Rockaways (the yellow strip in 
-Figure~\ref{fig:map-mean-time}).
-
-
-We can confidently say, \textbf{the mean-dist solution is better for this pilot.} This is because the goal
-of this pilot is to reduce delivery costs by getting the \emph{most} customers to use in-store pickup and
-returns. We want to situate the stores in the highest customer densities rather than accomodating access to
-every possible customer. We can see this in the results of the optimization as the average travel time for
-this model is 9.29~min, 18\% lower than `max-dist' model's 11.28~min. And more so, only 6.3\% of customers 
-have to travel more than 15~minutes compared with 22.6\%. What we sacrifice is the maximum time for the 
-worst-case customers that is 6.3~min longer (31.7 vs.\ 25.4~min) and only 1.6\% of customers even have 
-trips over 20~min.
-
 %--------------------------------------------------------------------
 \section*{Question 6: Travel distance instead of travel time}
-\question{A colleague suggests using travel distances instead of OSRM traffic-free travel times. Could travel distances easily be incorporated into the model? Do you think using travel distance instead of travel time is an improvement to the model?}
 
 \end{document}
