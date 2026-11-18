@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 19:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 19:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -441,7 +441,7 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count327
 )
-(/private/tmp/orie_merge_round2/build/ORIE5380_Project_Report.aux)
+(/private/tmp/orie_link_build/ORIE5380_Project_Report.aux)
 \openout1 = `ORIE5380_Project_Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -498,8 +498,8 @@ LaTeX Font Info:    ... okay on input line 47.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 47.
-(/private/tmp/orie_merge_round2/build/ORIE5380_Project_Report.out)
-(/private/tmp/orie_merge_round2/build/ORIE5380_Project_Report.out)
+(/private/tmp/orie_link_build/ORIE5380_Project_Report.out)
+(/private/tmp/orie_link_build/ORIE5380_Project_Report.out)
 \@outlinefile=\write3
 \openout3 = `ORIE5380_Project_Report.out'.
 
@@ -528,13 +528,19 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 61.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 5
+3.
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 53.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 61.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 53.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -543,48 +549,43 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc}]
-<figures/part1_runtime_gap.png, id=20, 714.56963pt x 208.98074pt>
+<figures/part1_runtime_gap.png, id=21, 714.56963pt x 208.98074pt>
 File: figures/part1_runtime_gap.png Graphic file (type png)
 <use figures/part1_runtime_gap.png>
-Package pdftex.def Info: figures/part1_runtime_gap.png  used on input line 141.
+Package pdftex.def Info: figures/part1_runtime_gap.png  used on input line 143.
 
 (pdftex.def)             Requested size: 496.85625pt x 145.30974pt.
-<figures/part1_mean_max_time.png, id=22, 365.26462pt x 264.68887pt>
+<figures/part1_mean_max_time.png, id=23, 365.26462pt x 264.68887pt>
 File: figures/part1_mean_max_time.png Graphic file (type png)
 <use figures/part1_mean_max_time.png>
 Package pdftex.def Info: figures/part1_mean_max_time.png  used on input line 16
-4.
+6.
 (pdftex.def)             Requested size: 298.11678pt x 216.03656pt.
  [2 <./figures/part1_runtime_gap.png>]
-<figures/mean-dist-closest.png, id=35, 515.9275pt x 491.8375pt>
+<figures/mean-dist-closest.png, id=36, 515.9275pt x 491.8375pt>
 File: figures/mean-dist-closest.png Graphic file (type png)
 <use figures/mean-dist-closest.png>
-Package pdftex.def Info: figures/mean-dist-closest.png  used on input line 182.
+Package pdftex.def Info: figures/mean-dist-closest.png  used on input line 184.
 
 (pdftex.def)             Requested size: 178.86855pt x 170.51715pt.
-<figures/max-dist-closest.png, id=36, 515.9275pt x 491.8375pt>
+<figures/max-dist-closest.png, id=37, 515.9275pt x 491.8375pt>
 File: figures/max-dist-closest.png Graphic file (type png)
 <use figures/max-dist-closest.png>
-Package pdftex.def Info: figures/max-dist-closest.png  used on input line 188.
+Package pdftex.def Info: figures/max-dist-closest.png  used on input line 190.
 (pdftex.def)             Requested size: 178.86855pt x 170.51715pt.
-<figures/mean-dist-min.png, id=37, 606.265pt x 491.8375pt>
+<figures/mean-dist-min.png, id=38, 606.265pt x 491.8375pt>
 File: figures/mean-dist-min.png Graphic file (type png)
 <use figures/mean-dist-min.png>
-Package pdftex.def Info: figures/mean-dist-min.png  used on input line 196.
+Package pdftex.def Info: figures/mean-dist-min.png  used on input line 198.
 (pdftex.def)             Requested size: 178.86855pt x 145.1058pt.
-<figures/max-dist-min.png, id=38, 606.265pt x 491.8375pt>
+<figures/max-dist-min.png, id=39, 606.265pt x 491.8375pt>
 File: figures/max-dist-min.png Graphic file (type png)
 <use figures/max-dist-min.png>
-Package pdftex.def Info: figures/max-dist-min.png  used on input line 202.
+Package pdftex.def Info: figures/max-dist-min.png  used on input line 204.
 (pdftex.def)             Requested size: 178.86855pt x 145.1058pt.
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 2
-10.
- (/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [3 <./figures/part1_mean_max_time.png>] [4 <./figures/mean-dist-closest.png> 
-<./figures/max-dist-closest.png> <./figures/mean-dist-min.png> <./figures/max-d
-ist-min.png>]
-(/private/tmp/orie_merge_round2/build/ORIE5380_Project_Report.aux)
+ [3 <./figures/part1_mean_max_time.png>] [4 <./figures/mean-dist-closest.png> <
+./figures/max-dist-closest.png> <./figures/mean-dist-min.png> <./figures/max-di
+st-min.png>] [5] (/private/tmp/orie_link_build/ORIE5380_Project_Report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -594,9 +595,9 @@ Package rerunfilecheck Info: File `ORIE5380_Project_Report.out' has not changed
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 14129 strings out of 467525
- 221852 string characters out of 5418982
- 665886 words of memory out of 5000000
+ 14130 strings out of 467525
+ 221770 string characters out of 5418982
+ 662886 words of memory out of 5000000
  42842 multiletter control sequences out of 15000+600000
  647786 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -614,11 +615,11 @@ live/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texl
 ive/2026/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2026
 /texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb>
-Output written on /private/tmp/orie_merge_round2/build/ORIE5380_Project_Report.
-pdf (4 pages, 1179703 bytes).
+Output written on /private/tmp/orie_link_build/ORIE5380_Project_Report.pdf (5 p
+ages, 1183123 bytes).
 PDF statistics:
- 123 PDF objects out of 1000 (max. 8388607)
- 78 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
+ 129 PDF objects out of 1000 (max. 8388607)
+ 83 compressed objects within 1 object stream
+ 13 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
