@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 18:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  17 NOV 2026 19:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -545,15 +545,15 @@ al/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc}]
 <figures/part1_runtime_gap.png, id=20, 714.56963pt x 208.98074pt>
 File: figures/part1_runtime_gap.png Graphic file (type png)
 <use figures/part1_runtime_gap.png>
-Package pdftex.def Info: figures/part1_runtime_gap.png  used on input line 145.
+Package pdftex.def Info: figures/part1_runtime_gap.png  used on input line 141.
 
 (pdftex.def)             Requested size: 496.85625pt x 145.30974pt.
-<figures/part1_mean_max_time.png, id=22, 353.21962pt x 264.68887pt>
+<figures/part1_mean_max_time.png, id=22, 365.26462pt x 264.68887pt>
 File: figures/part1_mean_max_time.png Graphic file (type png)
 <use figures/part1_mean_max_time.png>
 Package pdftex.def Info: figures/part1_mean_max_time.png  used on input line 16
-8.
-(pdftex.def)             Requested size: 298.11678pt x 223.3953pt.
+4.
+(pdftex.def)             Requested size: 298.11678pt x 216.03656pt.
  [2 <./figures/part1_runtime_gap.png>] [3 <./figures/part1_mean_max_time.png>] 
 (./ORIE5380_Project_Report.aux)
  ***********
@@ -567,7 +567,7 @@ Package rerunfilecheck Info: File `ORIE5380_Project_Report.out' has not changed
 Here is how much of TeX's memory you used:
  14026 strings out of 467525
  219229 string characters out of 5418982
- 664856 words of memory out of 5000000
+ 664858 words of memory out of 5000000
  42749 multiletter control sequences out of 15000+600000
  645686 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -583,7 +583,7 @@ al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
 texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2026/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/202
 6/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on ORIE5380_Project_Report.pdf (3 pages, 269971 bytes).
+Output written on ORIE5380_Project_Report.pdf (3 pages, 276687 bytes).
 PDF statistics:
  92 PDF objects out of 1000 (max. 8388607)
  60 compressed objects within 1 object stream

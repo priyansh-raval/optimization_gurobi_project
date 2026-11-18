@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1794959002.36694 "ORIE5380_Project_Report.tex" "ORIE5380_Project_Report.pdf" "ORIE5380_Project_Report" 1794959003.45304 0
+["pdflatex"] 1794960436.14653 "ORIE5380_Project_Report.tex" "ORIE5380_Project_Report.pdf" "ORIE5380_Project_Report" 1794960437.22528 0
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -112,10 +112,10 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1777049962 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774209607 3636776 dc5fa9b6b1453b9d196cd42edf876004 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "ORIE5380_Project_Report.aux" 1794959003.3682 1833 67cf5a30152931fdee4e69b73e72a3bd "pdflatex"
-  "ORIE5380_Project_Report.out" 1794959002.89183 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "ORIE5380_Project_Report.tex" 1794959002.15892 8608 58b2e9581a6b66481fbe1e13f29c50f7 ""
-  "figures/part1_mean_max_time.png" 1794957053.54242 80605 9a5b40ff8839ad43693f0e0a6e314724 ""
+  "ORIE5380_Project_Report.aux" 1794960437.14265 1837 64058a770dac0af9c1eabce02d1dc15a "pdflatex"
+  "ORIE5380_Project_Report.out" 1794960436.62201 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "ORIE5380_Project_Report.tex" 1794960434.72366 8318 165464d53fbe212c28e67042ba3ef122 ""
+  "figures/part1_mean_max_time.png" 1794960434.6323 88919 4266c5932c0b9420e258c2e4a4e6dfeb ""
   "figures/part1_runtime_gap.png" 1794957053.29033 102098 4488424647047ab05c57f936e3808175 ""
   (generated)
   "ORIE5380_Project_Report.aux"

@@ -53,13 +53,13 @@
 \end{center}
 
 \textbf{Use of AI.} 
-We formulated the models ourselves on a whiteboard, then used Anthropic's Claude and OpenAI's ChatGPT to write up those formulations and help format tables, etc. For coding, we use AI to write all our code, but we read through it carefully and understand it in its entirety.
+We formulated the models ourselves on a whiteboard then used Claude and ChatGPT to write up those formulations and help format tables, etc. For coding, we use AI to write all our code, but we read through it carefully and understand it in its entirety.
 
 %--------------------------------------------------------------------
 \section*{Question 1: Minimize Mean Travel Time}
 
 Select $p$ of $N$ stores to minimize the average travel time of $M$ customers.
-Let $[M]=\{1,\ldots,M\}$ and $[N]=\{1,\ldots,N\}$ index customers and stores, and let $t_{ij}$ be the travel time from customer $i$ to store $j$.
+Let $[M]=\{1,\ldots,M\}$ and $[N]=\{1,\ldots,N\}$, and let $t_{ij}$ be the travel time from customer $i$ to store $j$.
 
 \subsection*{Decision Variables}
 \[
@@ -104,8 +104,8 @@ $x_{ij}\in\{0,1\}\quad \forall i\in[M],\ j\in[N]$ & Make customer assignments bi
 Select $p$ stores to minimize the maximum customer travel time, using the same $t_{ij}$.
 
 \subsection*{Decision Variables}
-Use the binary variables $y_j$ and $x_{ij}$ from Question 1. Add a continuous variable
-$T\ge0$ bounding every customer's assigned travel time.
+Use the binary variables $y_j$ and $x_{ij}$ from Question 1, but add a continuous variable
+$T\ge0$ that bounds every customer's travel time.
 
 \subsection*{Objective Function}
 \begin{equation}
@@ -130,10 +130,6 @@ $T\ge0$ & Keep the travel-time bound nonnegative. \\
 \bottomrule
 \end{tabular}
 \end{center}
-
-Customers need not be assigned to their nearest selected store if their travel time
-remains at most $T$. Reassigning them to their nearest selected store cannot increase
-$T$ and gives the nearest-store travel times requested for reporting.
 
 %--------------------------------------------------------------------
 \section*{Question 3: Optimization performance}
@@ -166,7 +162,7 @@ max-dist runtime (s) & 2.30 & 26.54 & 19.05 & 19.77 & 3.14 & 3.23 & 2.98 & 1.75 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{part1_mean_max_time.png}
-    \caption{Mean (solid) and maximum (dashed) customer travel time versus $p$ for the mean-dist (blue) and max-dist (green) models. For both models, travel times are measured to each customer's closest selected store.}
+    \caption{Mean (solid) and maximum (dashed) customer travel time versus $p$ for the mean model (blue) and worst-case model (green). For both models, travel times are measured to each customer's closest selected store.}
     \label{fig:mean-max}
 \end{figure}
 
