@@ -1,8 +1,8 @@
-PWD /Users/pri/Documents/cornell/opt_proj/src/report
+PWD /Users/david/Desktop/opt_project/src/report
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/pri/Documents/cornell/opt_proj/src/report/ORIE5380_Project_Report.tex
+INPUT /Users/david/Desktop/opt_project/src/report/ORIE5380_Project_Report.tex
 OUTPUT ORIE5380_Project_Report.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls

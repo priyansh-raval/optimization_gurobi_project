@@ -266,13 +266,11 @@ $t_{ij}$, appearing in the models as coefficients in the objective~\eqref{eq:mea
 and the contraints of the max-dist model. None of the decision variables nor the structure of the 
 constraints depend on what $t_{ij}$ measures. Thus, we can easily replace it with a travel distance, $d_{ij}$.
 
-Doing so, does not impact the rest of the model's constraints. Which also means we can expect similar solve times.
+Doing so does not impact the rest of the model's constraints. Which also means we can expect similar solve times.
 Though, sourcing the data could prove to be annoying.
 
-Using travel distance to travel time doesn't really address my IDIOT colleagues concerns because distance 
-measurements have no impact on the traffic-informed travel times which they are so worried about.
-It also is ignorant on underlying travel-time data information such as speed limits and road types.
-Distance would only make sense to use if all customers are walking or using public transit which actually
-does makes sense in Manhattan. But it would not really help with the traffic concerns.
+Using travel distance to travel time doesn't address my colleagues concerns because distance 
+measurements have no impact on the traffic-informed travel times which they are so worried about. In fact, distance measures
+will assume constant travel time.
 
 \end{document}
